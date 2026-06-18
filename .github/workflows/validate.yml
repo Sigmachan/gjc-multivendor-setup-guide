@@ -1,0 +1,15 @@
+name: validate-profiles
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+jobs:
+  static-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pyyaml
+      - name: Validate profile invariants (no credentials needed)
+        run: python3 scripts/validate-profiles.py

@@ -16,6 +16,13 @@
 ### Docs
 - 검증된 셀렉터 표에 **라이브-카탈로그 주의** 추가: `opencode-go/glm-5.2`·`google-antigravity/gemini-3.5-flash` 는 번들 스냅샷에 없고 프로바이더 디스커버리로만 해석되므로, 갱신 전엔 `selector did not resolve` 로 활성화 실패 가능 — 재로그인/재시도 또는 번들 대체(`opencode-go/deepseek-v4-pro` / `zai/glm-5.2`). (upstream PR #860 레드팀 리뷰 반영.)
 
+### Infra
+- **지속 유지보수 기반 추가** — 세션 독립으로 레포가 자가검증·벤치·드리프트 추적 가능:
+  - `scripts/validate-profiles.py` (크레덴셜 불요 정적 검증: 5역할·router 불변식·cross-family[예외 allowlist]·effort 하드룰·README 임베드 동기) + GitHub Actions `validate-profiles`.
+  - `scripts/revalidate.sh` (인증 머신 라이브 셀렉터 배터리 → `evidence/<date>-selectors.md`, 회귀 시 비정상 종료).
+  - `scripts/catalog-snapshot.sh` (라이브 카탈로그 스냅샷 + `--diff` 드리프트 감지).
+  - `evidence/` 날짜별 감사 추적 시드(2026-06-18) · `MAINTAINING.md` 플레이북.
+
 ## v1.1 — 2026-06-18
 
 ### Added
