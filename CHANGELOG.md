@@ -11,6 +11,11 @@
 
 ---
 
+## Unreleased
+
+### Docs
+- 검증된 셀렉터 표에 **라이브-카탈로그 주의** 추가: `opencode-go/glm-5.2`·`google-antigravity/gemini-3.5-flash` 는 번들 스냅샷에 없고 프로바이더 디스커버리로만 해석되므로, 갱신 전엔 `selector did not resolve` 로 활성화 실패 가능 — 재로그인/재시도 또는 번들 대체(`opencode-go/deepseek-v4-pro` / `zai/glm-5.2`). (upstream PR #860 레드팀 리뷰 반영.)
+
 ## v1.1 — 2026-06-18
 
 ### Added

@@ -327,6 +327,9 @@ profiles:
 > [!WARNING]
 > **이 환경에서 동작하지 않은 셀렉터**(피하라): `openai-codex/gpt-5.3-codex`·`gpt-5.2-codex`·`gpt-5.1-codex-max`·`gpt-5.1-codex-mini`(ChatGPT 계정 미지원) · `google-antigravity/gemini-3.1-pro-high`(엔진은 `gemini-3.1-pro-low:high` 사용) · `gemini-3-pro`(은퇴) · `claude-sonnet-4-6-thinking`(404) · `gpt-oss-120b`(500). `opencode-go/*` 는 `OPENCODE_API_KEY` **미설정 시에만** 실패한다(키 설정 후 위 표대로 동작).
 
+> [!NOTE]
+> `opencode-go/glm-5.2` 와 `google-antigravity/gemini-3.5-flash` 는 **번들 스냅샷(`packages/ai/src/models.json`)엔 없고, 프로바이더 라이브 카탈로그에서 받아오는** id다. 인증 후 온라인 디스커버리가 레지스트리를 채우면 해석된다(위 실호출 ✅). 단 `required_providers` 는 크레덴셜만 검증할 뿐 디스커버리 최신성을 보장하지 않으므로, 갱신 전 상태에선 `selector did not resolve` 로 활성화가 실패할 수 있다. 그 경우 재로그인/재시도로 카탈로그를 갱신하거나 번들 id로 대체하라 — critic 은 `opencode-go/deepseek-v4-pro`, GLM 은 `zai/glm-5.2`(`zai` 를 `required_providers` 에 추가).
+
 재현:
 ```bash
 gjc -p --no-session --no-tools --model "google-antigravity/gemini-3.1-pro-low:high" "Reply exactly: OK"
