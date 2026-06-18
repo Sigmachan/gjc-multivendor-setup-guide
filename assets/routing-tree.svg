@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="488" viewBox="0 0 1000 488" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" role="img">
+<defs><marker id="ah" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9AA0AE"/></marker></defs>
+<title>작업신호 → 위임 라우팅</title>
+<rect width="1000" height="488" rx="18" fill="#ffffff"/><rect width="1000" height="488" rx="18" fill="none" stroke="#ECECF1"/>
+<text x="24" y="42" font-size="18" font-weight="700" fill="#1A1A28">🔀 작업신호 → 위임 (본체가 분류)</text>
+<text x="24" y="66" font-size="12.5" fill="#6B6B7B">왼쪽 신호가 명확할 때만 오른쪽으로 위임 — 본체가 직접 할 수 있으면 직접.</text>
+<rect x="24" y="84" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="115" font-size="13" font-weight="600" fill="#33334a">🧩 단순 편집 · 1~2 파일</text>
+<line x1="472" y1="110" x2="530" y2="110" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="84" width="410" height="52" rx="10" fill="#F4F4F8"/><rect x="536" y="84" width="5" height="52" rx="2.5" fill="#9AA0AE"/>
+<text x="554" y="115" font-size="13" font-weight="700" fill="#1A1A28">본체 단독 (위임 없음)</text>
+<rect x="24" y="144" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="175" font-size="13" font-weight="600" fill="#33334a">🔨 구현 덩어리</text>
+<line x1="472" y1="170" x2="530" y2="170" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="144" width="410" height="52" rx="10" fill="#FBE9E4"/><rect x="536" y="144" width="5" height="52" rx="2.5" fill="#D9583E"/>
+<text x="554" y="175" font-size="13" font-weight="700" fill="#1A1A28">executor 위임</text>
+<rect x="24" y="204" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="235" font-size="13" font-weight="600" fill="#33334a">🔭 대형 PR · "왜 이렇게 짜였지?"</text>
+<line x1="472" y1="230" x2="530" y2="230" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="204" width="410" height="52" rx="10" fill="#E8F0FE"/><rect x="536" y="204" width="5" height="52" rx="2.5" fill="#4285F4"/>
+<text x="554" y="235" font-size="13" font-weight="700" fill="#1A1A28">architect 위임</text>
+<rect x="24" y="264" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="295" font-size="13" font-weight="600" fill="#33334a">🧠 "어떻게 설계할까 · 순서?"</text>
+<line x1="472" y1="290" x2="530" y2="290" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="264" width="410" height="52" rx="10" fill="#E8F0FE"/><rect x="536" y="264" width="5" height="52" rx="2.5" fill="#4285F4"/>
+<text x="554" y="295" font-size="13" font-weight="700" fill="#1A1A28">planner 위임</text>
+<rect x="24" y="324" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="355" font-size="13" font-weight="600" fill="#33334a">⚖ 머지 직전 · "확실해?"</text>
+<line x1="472" y1="350" x2="530" y2="350" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="324" width="410" height="52" rx="10" fill="#EEF1F5"/><rect x="536" y="324" width="5" height="52" rx="2.5" fill="#475569"/>
+<text x="554" y="355" font-size="13" font-weight="700" fill="#1A1A28">critic 위임</text>
+<rect x="24" y="384" width="440" height="52" rx="10" fill="#F7F7FA" stroke="#ECECF1"/>
+<text x="40" y="415" font-size="13" font-weight="600" fill="#33334a">🔗 설계 + 구현 + 검증 (복합)</text>
+<line x1="472" y1="410" x2="530" y2="410" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
+<rect x="536" y="384" width="410" height="52" rx="10" fill="#FEF1DD"/><rect x="536" y="384" width="5" height="52" rx="2.5" fill="#E08A1E"/>
+<text x="554" y="415" font-size="13" font-weight="700" fill="#1A1A28">planner → executor → critic 파이프라인</text>
+</svg>
