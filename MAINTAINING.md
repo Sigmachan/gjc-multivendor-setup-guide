@@ -56,6 +56,7 @@ bash scripts/catalog-snapshot.sh               # snapshot; later: scripts/catalo
 - **MAJOR** — structural redesign (role model, setup flow, routing).
 - Every release: `python3 scripts/validate-profiles.py` green → update `CHANGELOG.md` → tag `vX.Y`.
 - Keep `README` embedded YAML, `gjc-profiles.yml`, and `install.sh` in sync (the validator enforces README↔file).
+- **i18n**: when `gjc-profiles.yml` or the catalog changes, update the YAML block + tables in **all** language READMEs (`README.md` KO canonical · `README.en.md` · `README.zh.md` · `README.ja.md`). `validate-profiles.py` enforces YAML parity across every `README*.md`. Prose/comments translate; selectors stay verbatim; deep §6-2/§6-3 analysis stays only in the KO canonical (translations link to it).
 
 ---
 

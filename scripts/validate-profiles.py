@@ -124,18 +124,23 @@ def main() -> int:
         if uncovered:
             errors.append(f"[{name}] uses providers not in required_providers: {sorted(uncovered)}")
 
-    # 6. README embed sync
-    rtext = README.read_text(encoding="utf-8")
-    m = re.search(r"```yaml\n(profiles:.*?)\n```", rtext, re.S)
-    if not m:
-        warns.append("README has no embedded ```yaml profiles block")
-    else:
-        import yaml
+    # 6. README embed sync — every README*.md with an embedded yaml block must match gjc-profiles.yml
+    import yaml
+    file_map = {n: p["model_mapping"] for n, p in profiles.items()}
+    readmes = sorted(ROOT.glob("README*.md"))
+    checked_any = False
+    for rf in readmes:
+        rtext = rf.read_text(encoding="utf-8")
+        m = re.search(r"```yaml\n(profiles:.*?)\n```", rtext, re.S)
+        if not m:
+            continue
+        checked_any = True
         embed = yaml.safe_load(m.group(1))["profiles"]
-        file_map = {n: p["model_mapping"] for n, p in profiles.items()}
         embed_map = {n: p["model_mapping"] for n, p in embed.items()}
         if embed_map != file_map:
-            errors.append("README embedded profiles != gjc-profiles.yml (drift). Re-sync the README YAML block.")
+            errors.append(f"{rf.name} embedded profiles != gjc-profiles.yml (drift). Re-sync its YAML block.")
+    if not checked_any:
+        warns.append("no README*.md has an embedded ```yaml profiles block")
 
     print(f"profiles checked: {len(profiles)}")
     for w in warns:

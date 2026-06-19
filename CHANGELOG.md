@@ -11,6 +11,12 @@
 
 ---
 
+## v1.3 — 2026-06-18
+
+### Added
+- **다국어(i18n)**: 영문 `README.en.md` · 중문 `README.zh.md` · 일문 `README.ja.md` 추가. 한국어 정본 포함 4개 파일 상단에 언어 내비. 셀렉터·YAML은 verbatim, 프로즈·YAML 주석은 번역, 심층 분석(§6-2/6-3)은 요약 + 한국어 정본·공식 docs 링크.
+- `scripts/validate-profiles.py` 확장: **모든 `README*.md`의 임베드 YAML == `gjc-profiles.yml`** 패리티 검사(번역본 드리프트 방지). CI에 포함.
+
 ## v1.2 — 2026-06-18
 
 ### Added
