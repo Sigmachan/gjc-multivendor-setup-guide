@@ -1,61 +1,63 @@
 # Changelog
 
-이 가이드의 모든 변경은 이 파일에 기록한다.
+Every change to this guide is recorded in this file.
 
-**버전 규칙 (SemVer 유사 — `MAJOR.MINOR`)**
-- **MINOR ↑** — 프로필/모델 배치 추가·변경 (반드시 실호출 검증 동반)
-- **PATCH/문서** — 오타·문구·근거 보강 (버전 유지 또는 `x.y.z`)
-- **MAJOR ↑** — 구조 재설계 (역할 정의·셋업 방식·라우팅 모델 변경)
+**Versioning (SemVer-ish — `MAJOR.MINOR`)**
+- **MINOR ↑** — adding/changing profile or model placement (must ship with live-call verification)
+- **PATCH/Docs** — typos, wording, rationale (keep version, or `x.y.z`)
+- **MAJOR ↑** — structural redesign (role definitions, setup flow, routing model)
 
-각 릴리스는 git 태그(`vX.Y`)로 고정한다.
+Each release is pinned with a git tag (`vX.Y`).
 
 ---
 
 ## v1.3 — 2026-06-18
 
 ### Added
-- **다국어(i18n)**: 영문 `README.en.md` · 중문 `README.zh.md` · 일문 `README.ja.md` 추가. 한국어 정본 포함 4개 파일 상단에 언어 내비. 셀렉터·YAML은 verbatim, 프로즈·YAML 주석은 번역, 심층 분석(§6-2/6-3)은 요약 + 한국어 정본·공식 docs 링크.
-- `scripts/validate-profiles.py` 확장: **모든 `README*.md`의 임베드 YAML == `gjc-profiles.yml`** 패리티 검사(번역본 드리프트 방지). CI에 포함.
+- **i18n**: added English `README.en.md` · Chinese `README.zh.md` · Japanese `README.ja.md`. A language nav at the top of all 4 files including the Korean canonical. Selectors/YAML verbatim, prose/YAML comments translated, the deep analysis (§6-2/6-3) summarized + linked to the Korean canonical · official docs.
+- Extended `scripts/validate-profiles.py`: a parity check that **every `README*.md` embedded YAML == `gjc-profiles.yml`** (prevents translation drift). Included in CI.
+
+> Fork note (English edition): `README.md` is now the full English canonical; the original Korean canonical moved to `README.ko.md`. Install/raw URLs point to the `Sigmachan` fork.
 
 ## v1.2 — 2026-06-18
 
 ### Added
-- **업스트림 채택**: 가이드 압축판이 GJC 본 레포에 `docs/multi-vendor-profiles.md` 로 머지됨([PR #860](https://github.com/Yeachan-Heo/gajae-code/pull/860), `dev`). README 상단에 공식문서 배너 + 포지셔닝(이 레포 = 설치기·전체 프로필·검증 도구) 추가.
+- **Upstream adoption**: a condensed version of the guide was merged into the GJC main repo as `docs/multi-vendor-profiles.md` ([PR #860](https://github.com/Yeachan-Heo/gajae-code/pull/860), `dev`). Added an official-docs banner + positioning (this repo = installer · full profiles · validation tooling) at the top of the README.
 
 ### Docs
-- 검증된 셀렉터 표에 **라이브-카탈로그 주의** 추가: `opencode-go/glm-5.2`·`google-antigravity/gemini-3.5-flash` 는 번들 스냅샷에 없고 프로바이더 디스커버리로만 해석되므로, 갱신 전엔 `selector did not resolve` 로 활성화 실패 가능 — 재로그인/재시도 또는 번들 대체(`opencode-go/deepseek-v4-pro` / `zai/glm-5.2`). (upstream PR #860 레드팀 리뷰 반영.)
+- Added a **live-catalog caveat** to the verified-selector table: `opencode-go/glm-5.2` · `google-antigravity/gemini-3.5-flash` are absent from the bundled snapshot and resolve only via provider discovery, so before a refresh activation can fail with `selector did not resolve` — re-login/retry or substitute a bundled id (`opencode-go/deepseek-v4-pro` / `zai/glm-5.2`). (Reflects the upstream PR #860 red-team review.)
 
 ### Infra
-- **지속 유지보수 기반 추가** — 세션 독립으로 레포가 자가검증·벤치·드리프트 추적 가능:
-  - `scripts/validate-profiles.py` (크레덴셜 불요 정적 검증: 5역할·router 불변식·cross-family[예외 allowlist]·effort 하드룰·README 임베드 동기) + GitHub Actions `validate-profiles`.
-  - `scripts/revalidate.sh` (인증 머신 라이브 셀렉터 배터리 → `evidence/<date>-selectors.md`, 회귀 시 비정상 종료).
-  - `scripts/catalog-snapshot.sh` (라이브 카탈로그 스냅샷 + `--diff` 드리프트 감지).
-  - `evidence/` 날짜별 감사 추적 시드(2026-06-18) · `MAINTAINING.md` 플레이북.
+- **Added a durable maintenance base** — so the repo can self-validate, benchmark, and track drift independent of any session:
+  - `scripts/validate-profiles.py` (credential-free static validation: 5 roles · router invariant · cross-family [with exception allowlist] · effort hard-rules · README embed sync) + GitHub Actions `validate-profiles`.
+  - `scripts/revalidate.sh` (live selector battery on an authed machine → `evidence/<date>-selectors.md`, non-zero exit on regression).
+  - `scripts/catalog-snapshot.sh` (live catalog snapshot + `--diff` drift detection).
+  - `evidence/` dated audit-trail seed (2026-06-18) · `MAINTAINING.md` playbook.
 
 ## v1.1 — 2026-06-18
 
 ### Added
-- **Claude+Codex 2벤더 프로필** 2종: `claude-codex`(평소 균형), `claude-codex-max`(비용무시 최강).
-  설계 — **Anthropic = 실행·컨텍스트**(default·executor·architect=Opus; codex 272k라 1M ctx는 Opus만),
-  **Codex = 추론·비평**(planner=gpt-5.5 / critic=GPT, executor=Opus와 cross-family).
-- **버전 관리 도입**: CHANGELOG · version 배지 · git 태그(`v1.0`/`v1.1`).
+- **Two Claude+Codex 2-vendor profiles**: `claude-codex` (everyday balance), `claude-codex-max` (cost-no-object strongest).
+  Design — **Anthropic = execution/context** (default·executor·architect=Opus; codex is 272k, so only Opus gives 1M ctx),
+  **Codex = reasoning/critique** (planner=gpt-5.5 / critic=GPT, cross-family vs the Opus executor).
+- **Introduced version management**: CHANGELOG · version badge · git tags (`v1.0`/`v1.1`).
 
 ### Changed
-- 프로필 **8 → 10**. 매트릭스 SVG · README 표/임베드 YAML · install.sh 동기.
+- Profiles **8 → 10**. Synced the matrix SVG · README tables/embedded YAML · install.sh.
 
 ---
 
 ## v1.0 — 2026-06-18
 
 ### Added
-- 초판. claude·gpt·grok·gemini·opencode go **5벤더 역할 분담 8프로필**
+- Initial release. claude·gpt·grok·gemini·opencode go — **5-vendor role split, 8 profiles**
   (daily★/ultimate/coding-sprint/escalation/eco/monorepo/solo-anthropic/solo-openai).
-- `routing-rules.md`(본체 운영 규칙, `@`로 주입) · `install.sh`(원클릭 안전 병합) · SVG 5종(매트릭스·역할승자·아키텍처·라우팅·effort).
-- §6 검증 매트릭스 · §6-2 최적성 검토 · §6-3 잔여공백·GJC 실효 ctx 실측.
+- `routing-rules.md` (main-loop operating rules, injectable via `@`) · `install.sh` (one-click safe merge) · 5 SVGs (matrix·role-winners·architecture·routing·effort).
+- §6 validation matrix · §6-2 optimality review · §6-3 remaining gaps · GJC effective-ctx measurements.
 
-### Verified (GJC 실호출, 2026-06-18 · GJC 내부 재검증 20/20)
-- `gemini-3.1-pro-low:high` = 네이티브 고추론 (`gemini-3.1-pro-high`는 400 — 백엔드 id 부재).
-- `openai-codex`는 base GPT만(`gpt-5.5`/`gpt-5.4`) — `-codex` 변종 미지원.
-- `opencode-go/glm-5.2` 서빙 확인 → monorepo critic 채택(신규 오픈웨이트 1위).
-- Opus 4.8 컨텍스트 윈도우 = **1M**(멀티턴 누적). 단일 메시지 입력 한도 ~400k는 윈도우와 별개.
-- architect 장문맥: 명목 1M ≠ 실효 — Gemini 1M 26.3% 붕괴 / Opus 4.6 76% 유지.
+### Verified (GJC live calls, 2026-06-18 · 20/20 internal re-verification in GJC)
+- `gemini-3.1-pro-low:high` = native high reasoning (`gemini-3.1-pro-high` 400s — no such backend id).
+- `openai-codex` serves base GPT only (`gpt-5.5`/`gpt-5.4`) — `-codex` variants unsupported.
+- `opencode-go/glm-5.2` serving confirmed → adopted as monorepo critic (new open-weight #1).
+- Opus 4.8 context window = **1M** (multi-turn accumulation). The ~400k single-message input limit is separate from the window.
+- architect long context: nominal 1M ≠ effective — Gemini 1M collapses to 26.3% / Opus 4.6 holds 76%.

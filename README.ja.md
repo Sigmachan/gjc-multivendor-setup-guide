@@ -18,7 +18,7 @@
 
 </div>
 
-**[한국어](./README.md) · [English](./README.en.md) · [中文](./README.zh.md) · 日本語（このページ）**
+**[한국어](./README.ko.md) · [English](./README.md) · [中文](./README.zh.md) · 日本語（このページ）**
 
 > [!NOTE]
 > **本ガイドの中核は GJC 公式ドキュメントに採用された** — 圧縮版が上流に [`docs/multi-vendor-profiles.md`](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md) としてマージ済み（[PR #860](https://github.com/Yeachan-Heo/gajae-code/pull/860)、`dev`）。役割/セレクタの概念は **GJC 公式ドキュメントを正式リファレンス**とし、本リポジトリはそこに無いもの — **ワンライナー・インストーラ**、**10プロファイル一式**（`solo-*` / `claude-codex*` 含む）、そして[保守・検証ツール](./MAINTAINING.md)（静的チェック CI + ライブセレクタ検証 + カタログドリフト追跡）— を提供する。
@@ -28,7 +28,7 @@
 ## ⚡ 30秒インストール（ワンライナーをコピペ）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main/install.sh | bash
 ```
 
 この1行で **10個のプロファイルを `~/.gjc/agent/models.yml` に安全にマージ**し、既定プロファイルを `daily` に設定する。既存設定は自動バックアップされ、再実行してもクリーンに更新される。
@@ -284,7 +284,7 @@ profiles:
 
 </details>
 
-各プロファイルの設計理由、ニーズ別チートシート、完全なディープリサーチのベンチマーク分析（planner 推論の分裂、architect 長文脈の補正、GJC 実効コンテキスト実測）は、**[韓国語の正本 README](./README.md#5--최종-카탈로그-10종)** と公式 **[GJC ドキュメント](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md)** を参照。
+各プロファイルの設計理由、ニーズ別チートシート、完全なディープリサーチのベンチマーク分析（planner 推論の分裂、architect 長文脈の補正、GJC 実効コンテキスト実測）は、**[韓国語の正本 README](./README.ko.md#5--최종-카탈로그-10종)** と公式 **[GJC ドキュメント](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md)** を参照。
 
 ---
 
@@ -312,7 +312,7 @@ gjc -p --no-session --no-tools --model "google-antigravity/gemini-3.1-pro-low:hi
 gjc -p --no-session --no-tools --model "openai-codex/gpt-5.4:high" "Reply exactly: OK"
 ```
 
-> **役割配置の詳細レビューと GJC 実効コンテキスト実測**（韓国語正本の §6-2 / §6-3）は骨格がほぼ最適と確認：`gemini-3.1-pro-low:high` は Gemini のネイティブ高推論モードを呼ぶ（劣化版ではない）；planner の推論軸は分裂（Gemini が GPQA、GPT-5.5 が ARC-AGI-2 で勝つ）；Opus は 1M 文脈の検索で優位を保つ一方 Gemini は崩壊（ゆえに monorepo architect = Opus）；単一 `@file` 入力上限（anthropic/antigravity で約 400k）は 1M 文脈ウィンドウとは別物（巨大入力はターンに分割）。完全な表は **[韓国語 README §6](./README.md#6--검증-매트릭스)**。
+> **役割配置の詳細レビューと GJC 実効コンテキスト実測**（韓国語正本の §6-2 / §6-3）は骨格がほぼ最適と確認：`gemini-3.1-pro-low:high` は Gemini のネイティブ高推論モードを呼ぶ（劣化版ではない）；planner の推論軸は分裂（Gemini が GPQA、GPT-5.5 が ARC-AGI-2 で勝つ）；Opus は 1M 文脈の検索で優位を保つ一方 Gemini は崩壊（ゆえに monorepo architect = Opus）；単一 `@file` 入力上限（anthropic/antigravity で約 400k）は 1M 文脈ウィンドウとは別物（巨大入力はターンに分割）。完全な表は **[韓国語 README §6](./README.ko.md#6--검증-매트릭스)**。
 
 ---
 
@@ -321,7 +321,7 @@ gjc -p --no-session --no-tools --model "openai-codex/gpt-5.4:high" "Reply exactl
 ### ワンクリック（推奨）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main/install.sh | bash
 ```
 
 インストーラの動作：10プロファイルを `~/.gjc/agent/models.yml` に安全マージ（再実行で自動更新）・既存ファイルを自動バックアップ・既定プロファイルを `daily` に設定。`curl` + `python3` だけで動く。

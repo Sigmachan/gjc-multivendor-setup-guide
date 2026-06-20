@@ -1,107 +1,107 @@
-# GJC 멀티벤더 셋업 v1.1 — 10 프로필 (claude · gpt · grok · gemini · opencode go)
-# 설계 원칙: default=Opus 고정 · critic=cross-family · 무조건 max 금지 · 매쿼리 스왑 금지.
-# 엔진 하드룰: Gemini Pro={low,high} · openai-codex ctx 272k · Sonnet 최대 high
-#             · opencode-go effort 생략 · antigravity Gemini 고추론 = gemini-3.1-pro-low:high.
-# Gemini 는 google-antigravity 프로바이더(Google AI Pro/Ultra 구독 토큰).
-# ★ 모든 셀렉터는 이 머신에서 `gjc -p`로 실호출 동작 검증 완료(2026-06-18).
-#   openai-codex 는 ChatGPT 계정에서 base GPT(gpt-5.5/5.4)만 동작 — '-codex' 변종은 미지원이라 미사용.
-# 설치 후 GJC 에서 /login: anthropic · openai-codex · google-antigravity · xai.
-# 가이드: https://github.com/project820/gjc-multivendor-setup-guide
+# GJC multi-vendor setup v1.1 — 10 profiles (claude · gpt · grok · gemini · opencode go)
+# Design principles: default=Opus fixed · critic=cross-family · never blindly max · never swap per query.
+# Engine hard-rules: Gemini Pro={low,high} · openai-codex ctx 272k · Sonnet max high
+#                    · opencode-go omit effort · antigravity Gemini high reasoning = gemini-3.1-pro-low:high.
+# Gemini is the google-antigravity provider (Google AI Pro/Ultra subscription token).
+# ★ Every selector was live-call verified on this machine via `gjc -p` (2026-06-18).
+#   openai-codex only serves base GPT (gpt-5.5/5.4) on a ChatGPT account — '-codex' variants are unsupported, so unused.
+# After install, in GJC run /login: anthropic · openai-codex · google-antigravity · xai.
+# Guide: https://github.com/Sigmachan/gjc-multivendor-setup-guide
 
 profiles:
 
-  daily:                               # ★ 평소 기본 (--default daily)
+  daily:                               # ★ everyday default (--default daily)
     required_providers: [anthropic, openai-codex, google-antigravity, xai]
     model_mapping:
-      default:   anthropic/claude-opus-4-8:medium               # 본체 효율 knee
-      executor:  openai-codex/gpt-5.4:high                      # 코딩특화·중가($2.5/15)·벤더분산(검증✅)
-      planner:   google-antigravity/gemini-3.1-pro-low:high     # 추론 검증1위(GPQA 94.3 / ARC-AGI-2 77.1)
-      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx·멀티모달(MMMU-Pro 81%)
-      critic:    xai/grok-4.3:medium                            # cross-family 저가 독립비평($1.25/2.5)
+      default:   anthropic/claude-opus-4-8:medium               # main-loop efficiency knee
+      executor:  openai-codex/gpt-5.4:high                      # coding-capable, mid price ($2.5/15), vendor spread (verified✅)
+      planner:   google-antigravity/gemini-3.1-pro-low:high     # verified #1 reasoning (GPQA 94.3 / ARC-AGI-2 77.1)
+      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx · multimodal (MMMU-Pro 81%)
+      critic:    xai/grok-4.3:medium                            # cross-family cheap independent critic ($1.25/2.5)
 
-  ultimate:                            # 비용무시, 역할별 최강 + 벤더분산
+  ultimate:                            # cost-no-object, best per role + vendor spread
     required_providers: [anthropic, openai-codex, google-antigravity, xai]
     model_mapping:
       default:   anthropic/claude-opus-4-8:high
-      executor:  anthropic/claude-opus-4-8:max                  # 접근가능 코딩 1위(SWE-bench Verified 88.6)
-      planner:   openai-codex/gpt-5.5:xhigh                     # 최상위 추론 + OpenAI 다양성
-      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx·멀티모달
-      critic:    xai/grok-4.3:high                              # cross-family 독립비평
+      executor:  anthropic/claude-opus-4-8:max                  # accessible coding #1 (SWE-bench Verified 88.6)
+      planner:   openai-codex/gpt-5.5:xhigh                     # top reasoning + OpenAI diversity
+      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx · multimodal
+      critic:    xai/grok-4.3:high                              # cross-family independent critic
 
-  coding-sprint:                       # 순수 구현 처리량. executor 주연 + 코딩인지 critic
+  coding-sprint:                       # implementation throughput. executor-led + coding-aware critic
     required_providers: [anthropic, openai-codex, google-antigravity]
     model_mapping:
-      default:   anthropic/claude-opus-4-8:medium               # 본체 오케스트레이션
-      executor:  anthropic/claude-opus-4-8:max                  # 접근가능 코딩 1위(88.6)
-      planner:   google-antigravity/gemini-3.1-pro-low:high     # 추론 검증1위로 경량 계획
-      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx 리뷰
-      critic:    openai-codex/gpt-5.4:high                      # 코딩인지 critic(실버그 포착), cross-family vs gemini
+      default:   anthropic/claude-opus-4-8:medium               # main-loop orchestration
+      executor:  anthropic/claude-opus-4-8:max                  # accessible coding #1 (88.6)
+      planner:   google-antigravity/gemini-3.1-pro-low:high     # #1 reasoning for lightweight planning
+      architect: google-antigravity/gemini-3.1-pro-low:high     # 1M ctx review
+      critic:    openai-codex/gpt-5.4:high                      # coding-aware critic (catches real bugs), cross-family vs gemini
 
-  escalation:                          # 고실패비용. 전역 최대 + critic 멀티벤더 병렬패널(§프로세스)
+  escalation:                          # high failure cost. max tier + multi-vendor critic panel (parallel)
     required_providers: [anthropic, openai-codex, google-antigravity, xai]
     model_mapping:
       default:   anthropic/claude-opus-4-8:high
       executor:  anthropic/claude-opus-4-8:max
       planner:   openai-codex/gpt-5.5:xhigh
       architect: google-antigravity/gemini-3.1-pro-low:high
-      critic:    xai/grok-4.3:xhigh                             # + 3표 교차벤더 critic 패널(독립투표→본체집계)
+      critic:    xai/grok-4.3:xhigh                             # + 3-vote cross-vendor critic panel (independent vote → main loop tallies)
 
-  eco:                                 # 최저가 — 본체만 Opus(effort 절감), 위임은 초저가/구독 모델(전부 검증✅)
+  eco:                                 # cheapest — only the main loop is Opus (effort trimmed), delegation ultra-cheap/subscription (all verified✅)
     required_providers: [anthropic, opencode-go, google-antigravity, xai]
     model_mapping:
-      default:   anthropic/claude-opus-4-8:low                  # 라우터는 못 내림, effort만 절감
-      executor:  opencode-go/deepseek-v4-flash                  # $0.14/0.28, 1M, 최저가 코더(5번째 벤더)
-      planner:   xai/grok-4-1-fast:high                         # $0.2/0.5, 2M, 저가 추론
-      architect: google-antigravity/gemini-3.1-pro-low          # 구독 토큰, 저effort, 1M ctx
-      critic:    google-antigravity/gemini-3.5-flash            # 구독 토큰, 경량, cross-family vs executor(opencode-go)
+      default:   anthropic/claude-opus-4-8:low                  # can't lower the router, only its effort
+      executor:  opencode-go/deepseek-v4-flash                  # $0.14/0.28, 1M, cheapest coder (5th vendor)
+      planner:   xai/grok-4-1-fast:high                         # $0.2/0.5, 2M, cheap reasoning
+      architect: google-antigravity/gemini-3.1-pro-low          # subscription token, low effort, 1M ctx
+      critic:    google-antigravity/gemini-3.5-flash            # subscription token, light, cross-family vs executor (opencode-go)
 
-  monorepo:                            # 거대 코드베이스 — 전역 1M ctx (★codex 272k 배제)
+  monorepo:                            # huge codebases — ≥1M ctx everywhere (★codex 272k excluded)
     required_providers: [anthropic, google-antigravity, opencode-go]
     model_mapping:
       default:   anthropic/claude-opus-4-8:medium               # 1M
       executor:  anthropic/claude-opus-4-8:high                 # 1M
-      planner:   google-antigravity/gemini-3.1-pro-low:high     # 추론(스코프 입력)
-      architect: anthropic/claude-opus-4-8:high                 # Opus 4.8 = GJC 1M ctx 윈도우 지원(멀티턴 누적·검색 최상). 단일 메시지 paste만 ~400k 한도 — 한 방에 >400k는 opencode-go/deepseek-v4-pro
-      critic:    opencode-go/glm-5.2                            # 신규 오픈웨이트 1위(AA 51 > V4 Pro 44), cross-family vs anthropic (대안: deepseek-v4-pro)
+      planner:   google-antigravity/gemini-3.1-pro-low:high     # reasoning (scoped input)
+      architect: anthropic/claude-opus-4-8:high                 # Opus 4.8 = GJC 1M ctx window (best multi-turn retrieval). Single-message paste cap ~400k — for one-shot >400k use opencode-go/deepseek-v4-pro
+      critic:    opencode-go/glm-5.2                            # new open-weight #1 (AA 51 > V4 Pro 44), cross-family vs anthropic (alt: deepseek-v4-pro)
 
-  solo-anthropic:                      # 단일 벤더로만 운영, 신뢰성 곱셈붕괴(0.99^N) 회피
+  solo-anthropic:                      # single-vendor operation, avoids 0.99^N reliability collapse
     required_providers: [anthropic]
     model_mapping:
       default:   anthropic/claude-opus-4-8:high
       executor:  anthropic/claude-opus-4-8:max
       planner:   anthropic/claude-opus-4-8:max
-      architect: anthropic/claude-opus-4-8:high                 # 1M, Gemini 대체(폴백 1순위)
-      critic:    anthropic/claude-sonnet-4-6:high               # ⚠동일벤더=독립성 약함(트레이드오프)
+      architect: anthropic/claude-opus-4-8:high                 # 1M, Gemini replacement (fallback #1)
+      critic:    anthropic/claude-sonnet-4-6:high               # ⚠same vendor = weak independence (tradeoff)
 
-  solo-openai:                         # ChatGPT(Codex) 계정만 — base GPT 전용 (★ctx 272k 상한)
+  solo-openai:                         # ChatGPT (Codex) account only — base GPT only (★272k ctx cap)
     required_providers: [openai-codex]
     model_mapping:
-      default:   openai-codex/gpt-5.5:high                      # 라우터(base GPT 최강)
-      executor:  openai-codex/gpt-5.5:xhigh                     # 이 계정 최강 코더
-      planner:   openai-codex/gpt-5.5:xhigh                     # 최상위 추론
-      architect: openai-codex/gpt-5.4:high                      # 272k 상한 — 거대 코드베이스엔 부적합
-      critic:    openai-codex/gpt-5.4:high                      # ⚠동일벤더=독립성 약함(트레이드오프)
+      default:   openai-codex/gpt-5.5:high                      # router (strongest base GPT)
+      executor:  openai-codex/gpt-5.5:xhigh                     # this account's strongest coder
+      planner:   openai-codex/gpt-5.5:xhigh                     # top reasoning
+      architect: openai-codex/gpt-5.4:high                      # 272k cap — unfit for huge codebases
+      critic:    openai-codex/gpt-5.4:high                      # ⚠same vendor = weak independence (tradeoff)
 
-  claude-codex:                        # ★2벤더(Claude+Codex)만 — 평소 균형. Anthropic=실행·ctx / Codex=추론·비평
+  claude-codex:                        # ★Claude+Codex (2 subs) only — everyday balance. Anthropic = execution/ctx, Codex = reasoning/critique
     required_providers: [anthropic, openai-codex]
     model_mapping:
-      default:   anthropic/claude-opus-4-8:medium               # 라우터·툴신뢰
-      executor:  anthropic/claude-opus-4-8:high                 # 코딩 1위(SWE-bench 88.6)
-      planner:   openai-codex/gpt-5.5:high                      # OpenAI 추론 플래그십
-      architect: anthropic/claude-opus-4-8:high                 # 1M 윈도우(codex 272k 한계 회피)
-      critic:    openai-codex/gpt-5.4:high                      # cross-family vs Opus(executor), 코딩인지
+      default:   anthropic/claude-opus-4-8:medium               # router · tool reliability
+      executor:  anthropic/claude-opus-4-8:high                 # coding #1 (SWE-bench 88.6)
+      planner:   openai-codex/gpt-5.5:high                      # OpenAI reasoning flagship
+      architect: anthropic/claude-opus-4-8:high                 # 1M window (avoids codex 272k limit)
+      critic:    openai-codex/gpt-5.4:high                      # cross-family vs Opus (executor), coding-aware
 
-  claude-codex-max:                    # 2벤더(Claude+Codex) 최강 — 비용 무시
+  claude-codex-max:                    # Claude+Codex (2 subs) strongest — cost-no-object
     required_providers: [anthropic, openai-codex]
     model_mapping:
       default:   anthropic/claude-opus-4-8:high
-      executor:  anthropic/claude-opus-4-8:max                  # SWE-bench 88.6 코딩 1위
-      planner:   openai-codex/gpt-5.5:xhigh                     # 최상위 추론(ARC-AGI-2 강)
-      architect: anthropic/claude-opus-4-8:high                 # 1M 윈도우
-      critic:    openai-codex/gpt-5.5:high                      # cross-family 독립 비평 vs Opus
+      executor:  anthropic/claude-opus-4-8:max                  # SWE-bench 88.6 coding #1
+      planner:   openai-codex/gpt-5.5:xhigh                     # top reasoning (strong ARC-AGI-2)
+      architect: anthropic/claude-opus-4-8:high                 # 1M window
+      critic:    openai-codex/gpt-5.5:high                      # cross-family independent critique vs Opus
 
 # ─────────────────────────────────────────────────────────────────────────────
-# opencode-go: OPENCODE_API_KEY 설정 시 활성(eco.executor·monorepo.critic 에서 사용).
-#   검증✅: deepseek-v4-flash/pro · minimax-m2.7 · qwen3.7-max · kimi-k2.6 · glm-5.1 · mimo-v2.5.
-# 선택: grok 구독(SuperGrok OAuth)의 grok-build/composer 도 사용 가능(검증✅):
-#   xai/grok-composer-2.5-fast (200k) · grok-build 계열은 /login 후 카탈로그 노출.
+# opencode-go: active when OPENCODE_API_KEY is set (used in eco.executor · monorepo.critic).
+#   verified✅: deepseek-v4-flash/pro · minimax-m2.7 · qwen3.7-max · kimi-k2.6 · glm-5.1 · mimo-v2.5.
+# optional: the grok subscription (SuperGrok OAuth) grok-build/composer also work (verified✅):
+#   xai/grok-composer-2.5-fast (200k) · the grok-build family is exposed in the catalog after /login.

@@ -18,7 +18,7 @@
 
 </div>
 
-**[한국어](./README.md) · [English](./README.en.md) · 中文（本页） · [日本語](./README.ja.md)**
+**[한국어](./README.ko.md) · [English](./README.md) · 中文（本页） · [日本語](./README.ja.md)**
 
 > [!NOTE]
 > **本指南的核心已被采纳进 GJC 官方文档** — 精简版已合并到上游 [`docs/multi-vendor-profiles.md`](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md)（[PR #860](https://github.com/Yeachan-Heo/gajae-code/pull/860)，`dev`）。角色/选择器概念请以 **GJC 官方文档为权威参考**；本仓库提供官方文档没有的东西 —— **一行安装脚本**、**完整的 10 套配置**（含 `solo-*` / `claude-codex*`），以及[维护与验证工具](./MAINTAINING.md)（静态检查 CI + 实时选择器测试 + 目录漂移追踪）。
@@ -28,7 +28,7 @@
 ## ⚡ 30 秒安装（一行复制粘贴）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main/install.sh | bash
 ```
 
 这一行会**把 10 套配置安全合并进 `~/.gjc/agent/models.yml`**，并把默认配置设为 `daily`。原有配置会自动备份，重复执行也会干净地原地更新。
@@ -284,7 +284,7 @@ profiles:
 
 </details>
 
-各配置的设计理由、按需速查表，以及完整的深度调研基准分析（planner 推理分裂、architect 长上下文校正、GJC 有效上下文实测），见 **[韩文权威 README](./README.md#5--최종-카탈로그-10종)** 和官方 **[GJC 文档](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md)**。
+各配置的设计理由、按需速查表，以及完整的深度调研基准分析（planner 推理分裂、architect 长上下文校正、GJC 有效上下文实测），见 **[韩文权威 README](./README.ko.md#5--최종-카탈로그-10종)** 和官方 **[GJC 文档](https://github.com/Yeachan-Heo/gajae-code/blob/dev/docs/multi-vendor-profiles.md)**。
 
 ---
 
@@ -312,7 +312,7 @@ gjc -p --no-session --no-tools --model "google-antigravity/gemini-3.1-pro-low:hi
 gjc -p --no-session --no-tools --model "openai-codex/gpt-5.4:high" "Reply exactly: OK"
 ```
 
-> **深度角色配置复查与 GJC 有效上下文实测**（韩文权威版 §6-2 / §6-3）确认骨架接近最优：`gemini-3.1-pro-low:high` 调用的是 Gemini 原生高推理模式（非降级）；planner 推理维度分裂（Gemini 赢 GPQA，GPT-5.5 赢 ARC-AGI-2）；Opus 在 1M 上下文检索上保持优势而 Gemini 崩溃（因此 monorepo architect = Opus）；单条 `@file` 输入上限（anthropic/antigravity 约 400k）与 1M 上下文窗口是两回事（巨型输入应跨轮分块）。完整表格见 **[韩文 README §6](./README.md#6--검증-매트릭스)**。
+> **深度角色配置复查与 GJC 有效上下文实测**（韩文权威版 §6-2 / §6-3）确认骨架接近最优：`gemini-3.1-pro-low:high` 调用的是 Gemini 原生高推理模式（非降级）；planner 推理维度分裂（Gemini 赢 GPQA，GPT-5.5 赢 ARC-AGI-2）；Opus 在 1M 上下文检索上保持优势而 Gemini 崩溃（因此 monorepo architect = Opus）；单条 `@file` 输入上限（anthropic/antigravity 约 400k）与 1M 上下文窗口是两回事（巨型输入应跨轮分块）。完整表格见 **[韩文 README §6](./README.ko.md#6--검증-매트릭스)**。
 
 ---
 
@@ -321,7 +321,7 @@ gjc -p --no-session --no-tools --model "openai-codex/gpt-5.4:high" "Reply exactl
 ### 一键（推荐）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main/install.sh | bash
 ```
 
 安装脚本做的事：把 10 套配置安全合并进 `~/.gjc/agent/models.yml`（重复执行自动更新）、自动备份原文件、把默认配置设为 `daily`。只需 `curl` + `python3`。

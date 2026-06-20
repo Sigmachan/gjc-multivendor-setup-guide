@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
 # ============================================================================
-#  GJC 멀티벤더 셋업 — 원클릭 설치기
-#  https://github.com/project820/gjc-multivendor-setup-guide
+#  GJC multi-vendor setup — one-click installer
+#  https://github.com/Sigmachan/gjc-multivendor-setup-guide
 #
-#  사용법:
-#    curl -fsSL https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main/install.sh | bash
+#  Usage:
+#    curl -fsSL https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main/install.sh | bash
 #
-#  옵션(환경변수):
-#    GJC_SETUP_DEFAULT=ultimate  # 기본 프로필 지정(기본값: daily). none 이면 기본설정 건너뜀
-#      예) curl -fsSL <url>/install.sh | GJC_SETUP_DEFAULT=ultimate bash
-#    GJC_CODING_AGENT_DIR=...    # GJC 에이전트 디렉터리 override (기본: ~/.gjc/agent)
+#  Options (env vars):
+#    GJC_SETUP_DEFAULT=ultimate  # pick the default profile (default: daily). 'none' skips default-setting
+#      e.g. curl -fsSL <url>/install.sh | GJC_SETUP_DEFAULT=ultimate bash
+#    GJC_CODING_AGENT_DIR=...    # override the GJC agent dir (default: ~/.gjc/agent)
 #
-#  안전장치: 기존 models.yml / config.yml 자동 백업 · 관리블록 sentinel 로 재실행 시 깔끔 교체.
+#  Safety: auto-backs up existing models.yml / config.yml · managed-block sentinel for a clean re-run swap.
 # ============================================================================
 set -euo pipefail
 
-REPO_RAW="${GJC_SETUP_REPO:-https://raw.githubusercontent.com/project820/gjc-multivendor-setup-guide/main}"
+REPO_RAW="${GJC_SETUP_REPO:-https://raw.githubusercontent.com/Sigmachan/gjc-multivendor-setup-guide/main}"
 PROFILES_URL="$REPO_RAW/gjc-profiles.yml"
 DIR="${GJC_CODING_AGENT_DIR:-$HOME/.gjc/agent}"
 TARGET="$DIR/models.yml"
@@ -28,37 +28,37 @@ g(){ printf '\033[32m%s\033[0m\n' "$*"; }
 y(){ printf '\033[33m%s\033[0m\n' "$*"; }
 die(){ printf '\033[31m✗ %s\033[0m\n' "$*" >&2; exit 1; }
 
-command -v python3 >/dev/null 2>&1 || die "python3 가 필요합니다 (YAML 안전 병합에 사용)."
+command -v python3 >/dev/null 2>&1 || die "python3 is required (used for the safe YAML merge)."
 
-b "▶ GJC 멀티벤더 셋업 설치"
+b "▶ Installing the GJC multi-vendor setup"
 
-# 1) 프로필 소스 확보 (로컬 테스트는 GJC_SETUP_SRC 로 파일 지정)
+# 1) Obtain the profile source (for local testing, point GJC_SETUP_SRC at a file)
 SRC="$(mktemp)"; trap 'rm -f "$SRC"' EXIT
 if [ -n "${GJC_SETUP_SRC:-}" ]; then
-  cp "$GJC_SETUP_SRC" "$SRC"; echo "  · 소스(로컬): $GJC_SETUP_SRC"
+  cp "$GJC_SETUP_SRC" "$SRC"; echo "  · source (local): $GJC_SETUP_SRC"
 else
-  command -v curl >/dev/null 2>&1 || die "curl 이 필요합니다."
-  curl -fsSL "$PROFILES_URL" -o "$SRC" || die "프로필 다운로드 실패: $PROFILES_URL"
-  echo "  · 소스: $PROFILES_URL"
+  command -v curl >/dev/null 2>&1 || die "curl is required."
+  curl -fsSL "$PROFILES_URL" -o "$SRC" || die "profile download failed: $PROFILES_URL"
+  echo "  · source: $PROFILES_URL"
 fi
 
 mkdir -p "$DIR"
 
-# 2) 백업
+# 2) Backup
 TS="$(date +%Y%m%d-%H%M%S)"
-[ -f "$TARGET" ] && { cp "$TARGET" "$TARGET.bak-$TS"; echo "  · 백업: $TARGET.bak-$TS"; }
+[ -f "$TARGET" ] && { cp "$TARGET" "$TARGET.bak-$TS"; echo "  · backup: $TARGET.bak-$TS"; }
 [ -f "$CONFIG" ] && cp "$CONFIG" "$CONFIG.bak-$TS"
 
-# 3) profiles 병합 (관리블록 sentinel — 재실행 시 자동 교체, 동일이름 기존 프로필은 교체)
+# 3) Merge profiles (managed-block sentinel — auto-replaced on re-run; same-named existing profiles are replaced)
 python3 - "$TARGET" "$SRC" "$SENTINEL" <<'PY'
 import sys, os, re
 target, src, name = sys.argv[1], sys.argv[2], sys.argv[3]
-START = f"  # >>> {name} (managed block — 재실행 시 자동 교체) >>>"
+START = f"  # >>> {name} (managed block — auto-replaced on re-run) >>>"
 END   = f"  # <<< {name} <<<"
 
 s = open(src, encoding="utf-8").read().splitlines()
 pi = next((i for i, l in enumerate(s) if l.rstrip() == "profiles:"), None)
-if pi is None: sys.exit("소스에 profiles: 블록이 없습니다")
+if pi is None: sys.exit("source has no profiles: block")
 children = s[pi+1:]
 while children and not children[0].strip(): children.pop(0)
 while children and not children[-1].strip(): children.pop()
@@ -92,11 +92,11 @@ else:
     out = "\n".join(head + managed + out_body + tail).rstrip() + "\n"
 
 open(target, "w", encoding="utf-8").write(out)
-if replaced: print("  · 기존 동일이름 프로필 교체:", ", ".join(sorted(set(replaced))))
-print("  · 프로필 10종 병합 완료 →", target)
+if replaced: print("  · replaced existing same-named profiles:", ", ".join(sorted(set(replaced))))
+print("  · merged 10 profiles →", target)
 PY
 
-# 4) 기본 프로필 설정 (config.yml). none 이면 건너뜀
+# 4) Set the default profile (config.yml). 'none' skips this
 if [ "$DEFAULT_PROFILE" != "none" ]; then
 python3 - "$CONFIG" "$DEFAULT_PROFILE" <<'PY'
 import sys, os, re
@@ -117,27 +117,27 @@ else:
     if not found: lines.insert(mi+1, f"  default: {prof}")
     content = "\n".join(lines) + "\n"
 open(cfg, "w", encoding="utf-8").write(content)
-print(f"  · 기본 프로필 = {prof} (config.yml)")
+print(f"  · default profile = {prof} (config.yml)")
 PY
 fi
 
 echo
-g "✓ 설치 완료"
+g "✓ Install complete"
 echo
-b "설치된 프로필 10종"
+b "10 profiles installed"
 echo "  ★daily  ultimate  coding-sprint  escalation  eco  monorepo  solo-anthropic  solo-openai  claude-codex  claude-codex-max"
 echo
-b "다음 단계"
-echo "  gjc --mpreset daily          # 이번 세션만 적용"
-echo "  gjc --list-models daily      # 적용 확인 (세션 중 Ctrl+P 로 순환)"
+b "Next steps"
+echo "  gjc --mpreset daily          # this session only"
+echo "  gjc --list-models daily      # confirm (cycle with Ctrl+P during a session)"
 echo
-b "⚠ 프로바이더 인증 (필수 — 안 하면 'No API key')"
-echo "  GJC를 켠 뒤 아래를 한 번씩(브라우저 OAuth):"
+b "⚠ Provider authentication (required — otherwise 'No API key')"
+echo "  After opening GJC, run each once (browser OAuth):"
 echo "    /login anthropic           # claude"
-echo "    /login openai-codex        # gpt(base GPT: gpt-5.5/5.4)"
-echo "    /login google-antigravity  # gemini (Google AI Pro/Ultra 구독)"
-echo "    /login xai                 # grok 전체(grok-4.3 등)"
-echo "  opencode-go 는 /provider add 또는 OPENCODE_API_KEY"
-[ "$DEFAULT_PROFILE" != "none" ] && y "현재 기본 프로필이 '$DEFAULT_PROFILE' 로 설정됨 (config.yml). 새 세션부터 자동 적용."
+echo "    /login openai-codex        # gpt (base GPT: gpt-5.5/5.4)"
+echo "    /login google-antigravity  # gemini (Google AI Pro/Ultra subscription)"
+echo "    /login xai                 # grok full lineup (grok-4.3, etc.)"
+echo "  opencode-go: /provider add or OPENCODE_API_KEY"
+[ "$DEFAULT_PROFILE" != "none" ] && y "Default profile is now set to '$DEFAULT_PROFILE' (config.yml). Applied automatically from new sessions."
 echo
-echo "  되돌리기: cp \"$TARGET.bak-$TS\" \"$TARGET\"   (백업본 존재 시)"
+echo "  Revert: cp \"$TARGET.bak-$TS\" \"$TARGET\"   (if a backup exists)"

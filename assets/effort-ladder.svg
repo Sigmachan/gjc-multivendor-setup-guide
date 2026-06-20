@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1000" height="312" viewBox="0 0 1000 312" font-family="-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif" role="img">
 <defs><marker id="ah" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9AA0AE"/></marker></defs>
-<title>적응형 effort 에스컬레이션</title>
+<title>adaptive effort escalation</title>
 <rect width="1000" height="312" rx="18" fill="#ffffff"/><rect width="1000" height="312" rx="18" fill="none" stroke="#ECECF1"/>
-<text x="24" y="42" font-size="18" font-weight="700" fill="#1A1A28">⚙ 적응형 effort 에스컬레이션 (실패신호 기반)</text>
+<text x="24" y="42" font-size="18" font-weight="700" fill="#1A1A28">⚙ adaptive effort escalation (failure-signal-driven)</text>
 <rect x="44" y="170" width="170" height="60" rx="12" fill="#FDECE7"/>
 <text x="129.0" y="200" font-size="17" font-weight="800" fill="#8A2B1A" text-anchor="middle">:low</text>
-<text x="129.0" y="216" font-size="11.5" fill="#8A2B1A" text-anchor="middle" opacity="0.85">평소 시작</text>
+<text x="129.0" y="216" font-size="11.5" fill="#8A2B1A" text-anchor="middle" opacity="0.85">usual start</text>
 <line x1="220" y1="208" x2="250" y2="186" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
-<text x="235" y="172" font-size="9.5" fill="#7A7F8C" text-anchor="middle">실패신호</text>
-<text x="235" y="183" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1단계</text>
+<text x="235" y="172" font-size="9.5" fill="#7A7F8C" text-anchor="middle">fail signal</text>
+<text x="235" y="183" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1 step</text>
 <rect x="256" y="142" width="170" height="88" rx="12" fill="#F6C9BC"/>
 <text x="341.0" y="172" font-size="17" font-weight="800" fill="#8A2B1A" text-anchor="middle">:high</text>
-<text x="341.0" y="216" font-size="11.5" fill="#8A2B1A" text-anchor="middle" opacity="0.85">막히면</text>
+<text x="341.0" y="216" font-size="11.5" fill="#8A2B1A" text-anchor="middle" opacity="0.85">when stuck</text>
 <line x1="432" y1="208" x2="462" y2="172" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
-<text x="447" y="158" font-size="9.5" fill="#7A7F8C" text-anchor="middle">실패신호</text>
-<text x="447" y="169" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1단계</text>
+<text x="447" y="158" font-size="9.5" fill="#7A7F8C" text-anchor="middle">fail signal</text>
+<text x="447" y="169" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1 step</text>
 <rect x="468" y="114" width="170" height="116" rx="12" fill="#EC9A85"/>
 <text x="553.0" y="144" font-size="17" font-weight="800" fill="#5A1A0E" text-anchor="middle">:xhigh</text>
-<text x="553.0" y="216" font-size="11.5" fill="#5A1A0E" text-anchor="middle" opacity="0.85">계속 실패</text>
+<text x="553.0" y="216" font-size="11.5" fill="#5A1A0E" text-anchor="middle" opacity="0.85">still failing</text>
 <line x1="644" y1="208" x2="674" y2="158" stroke="#9AA0AE" stroke-width="1.5" marker-end="url(#ah)"/>
-<text x="659" y="144" font-size="9.5" fill="#7A7F8C" text-anchor="middle">실패신호</text>
-<text x="659" y="155" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1단계</text>
+<text x="659" y="144" font-size="9.5" fill="#7A7F8C" text-anchor="middle">fail signal</text>
+<text x="659" y="155" font-size="9.5" fill="#7A7F8C" text-anchor="middle">↑1 step</text>
 <rect x="680" y="86" width="170" height="144" rx="12" fill="#D9583E"/>
 <text x="765.0" y="116" font-size="17" font-weight="800" fill="#FFFFFF" text-anchor="middle">:max</text>
-<text x="765.0" y="216" font-size="11.5" fill="#FFFFFF" text-anchor="middle" opacity="0.85">최후</text>
-<text x="24" y="272" font-size="12" fill="#1A1A28">✅ 못 풀어서 올리는 건 정당 (테스트깨짐·자기모순·critic반려)   ❌ "올리면 안전하겠지"는 낭비 — medium→high: +1~2점에 토큰 ~23배</text>
-<text x="24" y="294" font-size="12" fill="#6B6B7B">minimal 금지(-23점 급락) · 저점은 low 까지 · Gemini 3.x Pro 는 low ↔ high 단일 점프</text>
+<text x="765.0" y="216" font-size="11.5" fill="#FFFFFF" text-anchor="middle" opacity="0.85">last resort</text>
+<text x="24" y="272" font-size="12" fill="#1A1A28">✅ raising because it couldn't solve it is valid (broken tests · self-contradiction · critic rejection)   ❌ "raise to be safe" is waste — medium→high: +1–2 pts for ~23× tokens</text>
+<text x="24" y="294" font-size="12" fill="#6B6B7B">no minimal (−23-pt drop) · floor at low · Gemini 3.x Pro is a single low ↔ high jump</text>
 </svg>
